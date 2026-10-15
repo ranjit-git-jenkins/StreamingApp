@@ -1,0 +1,13 @@
+{{- range .Values.services }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: streamingapp-{{ .name }}
+spec:
+  type: ClusterIP
+  selector: {app: streamingapp-{{ .name }}}
+  ports:
+    - port: {{ .port }}
+      targetPort: {{ .port }}
+{{- end }}

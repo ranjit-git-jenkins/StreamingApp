@@ -1,0 +1,33 @@
+global:
+  registry: "REPLACE_ACCOUNT_ID.dkr.ecr.ap-south-1.amazonaws.com"
+  tag: "latest"
+replicaCount: 1
+services:
+  - name: authservice
+    path: backend/authService
+    port: 3001
+  - name: streamingservice
+    path: backend/streamingService
+    port: 3002
+  - name: adminservice
+    path: backend/adminService
+    port: 3003
+  - name: chatservice
+    path: backend/chatService
+    port: 3004
+  - name: frontend
+    path: frontend
+    port: 80
+resources:
+  requests: {cpu: 100m, memory: 128Mi}
+  limits: {cpu: 500m, memory: 512Mi}
+hpa:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 3
+  averageUtilization: 70
+# Supply a secret through an external secret manager in production.
+secrets:
+  mongoUri: "REPLACE_WITH_MONGO_CONNECTION_STRING"
+# Frontend React REACT_APP_* variables are compiled into the image at BUILD time.
+# Backend app-specific environment variables and routes must be verified.
